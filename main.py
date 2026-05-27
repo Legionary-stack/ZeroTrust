@@ -7,7 +7,7 @@ import os
 import traceback
 import jwt
 import httpx
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 
 from auth.oauth import oauth
@@ -38,8 +38,8 @@ def create_service_token() -> str:
     payload = {
         "iss": "service_a_gateway",
         "aud": "service_b_data",
-        "exp": datetime.utcnow() + timedelta(minutes=5),
-        "iat": datetime.utcnow()
+        "exp": datetime.now(timezone.utc) + timedelta(minutes=5),
+        "iat": datetime.now(timezone.utc)
     }
     return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
 
